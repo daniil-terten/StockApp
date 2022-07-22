@@ -9,37 +9,37 @@ namespace StockApp.models
 {
     public class BoxModel
     {
-        public Guid id { get; set; }
-        public int depth { get; set; }
-        public int height { get; set; }
-        public int width { get; set; }
-        public int weight { get; set; }
+        public Guid Id { get; set; }
+        public int Depth { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public virtual int Weight { get; set; }
 
         [JsonIgnore]
-        public int volume
+        public virtual int Volume
         {
             get
             {
-                return depth * height * width;
+                return Depth * Height * Width;
             }
         }
 
-        private DateTime? expirationDateContainer;
-        public  DateTime? expirationDate
+        private DateTime? expirationDate;
+        public virtual DateTime? ExpirationDate
         {
             get 
             { 
-                if (expirationDateContainer == null)
+                if (expirationDate == null)
                 {
-                    return dateOfProduction.AddDays(100);
+                    return DateOfProduction.AddDays(100);
                 }
-                return expirationDateContainer; 
+                return expirationDate; 
             }
             set
             {
-                expirationDateContainer = value;
+                expirationDate = value;
             }
         }
-        public DateTime dateOfProduction;
+        public virtual DateTime DateOfProduction { get; set; }
     }
 }

@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 
 namespace StockApp
 {
-    public class PalletsHelper
+    public class Warehouse
     {
-        public static void WriteInFile(ICollection<PalletModel> palletModelsList, string fileName = "pallets/pallets1.json")
+        private const string outputPath = "pallets/output.json";
+        private const string inputPath = "pallets/input.json";
+
+        public static void WriteInFile(IEnumerable<PalletModel> palletModelsList, string fileName = outputPath)
         {
             var options = new JsonSerializerOptions
             {
@@ -21,7 +24,7 @@ namespace StockApp
             File.WriteAllText(fileName, jsonString);
         }
 
-        public static ICollection<PalletModel> ReadFromFile(string fileName = "pallets/pallets.json")
+        public static IEnumerable<PalletModel> ReadFromFile(string fileName = inputPath)
         {
             var str = File.ReadAllText(fileName);
             return JsonSerializer.Deserialize<List<PalletModel>>(str);

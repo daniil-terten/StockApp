@@ -1,18 +1,22 @@
+using FluentAssertions;
 using StockApp;
 using StockApp.models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Xunit;
 
-namespace StockAppTests
+namespace StockAppTestProject
 {
-    public class Tests
+    public class WarehouseTests
     {
-        List<PalletModel> palletsList;
+        private List<PalletModel> palletsList;
+        private DateTime dateTime;
+        private string outputPath = "pallets/output.json";
 
-        [SetUp]
-        public void Setup()
+        public WarehouseTests()
         {
+            dateTime = DateTime.Now;
             palletsList = new List<PalletModel>
             {
                 new PalletModel
@@ -29,7 +33,7 @@ namespace StockAppTests
                             Height = 32,
                             Width = 3,
                             Depth = 4,
-                            ExpirationDate = DateTime.Now,
+                            ExpirationDate = dateTime,
                             Weight = 12
                         },
                         new BoxModel
@@ -38,7 +42,7 @@ namespace StockAppTests
                             Height = 22,
                             Width = 3,
                             Depth = 4,
-                            ExpirationDate = DateTime.Now.AddDays(5),
+                            ExpirationDate = dateTime.AddDays(5),
                             Weight = 12
                         }
                     }
@@ -57,7 +61,7 @@ namespace StockAppTests
                             Height = 212,
                             Width = 3,
                             Depth = 4,
-                            ExpirationDate = DateTime.Now,
+                            ExpirationDate = dateTime,
                             Weight = 32
                         },
                         new BoxModel
@@ -66,7 +70,7 @@ namespace StockAppTests
                             Height = 22,
                             Width = 3,
                             Depth = 4,
-                            ExpirationDate = DateTime.Now.AddDays(13),
+                            ExpirationDate = dateTime.AddDays(13),
                             Weight = 13
                         }
                     }
@@ -74,30 +78,26 @@ namespace StockAppTests
             };
         }
 
-        [Test]
-        public void Test1()
+        [Fact]
+        public void EditPalletsTest()
         {
             var newGuid = Guid.NewGuid();
             palletsList.FirstOrDefault().Id = newGuid;
-            Warehouse.WriteInFile(palletsList);
+            Warehouse.WriteInFile(palletsList, outputPath);
 
-            var palletsFromFile = Warehouse.ReadFromFile("pallets/pallets1.json");
+            var palletsFromFile = Warehouse.ReadFromFile(outputPath);
 
-            Warehouse.PrintPalletOnConsole(palletsFromFile);
-
-            Assert.IsTrue(palletsFromFile.Any(x=>x.Id == newGuid), $"Не найдена паллета с id = {newGuid}");
+            palletsFromFile.Any(x => x.Id == newGuid).Should().BeTrue();
         }
 
-        [Test]
-        public void Test2()
+        [Fact]
+        public void PalletsCountTest()
         {
-            Warehouse.WriteInFile(palletsList);
+            Warehouse.WriteInFile(palletsList, outputPath);
 
-            var palletsFromFile = Warehouse.ReadFromFile("pallets/pallets1.json");
+            var palletsFromFile = Warehouse.ReadFromFile(outputPath).ToList();
 
-            Warehouse.PrintPalletOnConsole(palletsFromFile);
-
-            Assert.IsTrue(palletsFromFile.Count == 2);
+            palletsFromFile.Count.Should().Be(2);
         }
     }
 }
