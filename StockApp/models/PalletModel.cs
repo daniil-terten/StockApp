@@ -10,29 +10,34 @@ namespace StockApp.models
     public class PalletModel : BoxModel
     {
 
-        public DateTime expirationDate
+        public PalletModel()
         {
-            get { return (DateTime)boxs.Min(a => a.expirationDate); }
+            Boxes = new List<BoxModel>();
         }
 
-        public int weight
+        public override DateTime? ExpirationDate
+        {
+            get { return (DateTime)Boxes.Min(a => a.ExpirationDate); }
+        }
+
+        public override int Weight
         {
             get
             {
-                return boxs.Sum(p => p.weight) + 30;
+                return Boxes.Sum(p => p.Weight) + 30;
             }
         }
 
-        public int volume
+        public override int Volume
         {
             get
             {
-                return (depth * height * width) + boxs.Sum(p => p.volume);
+                return (Depth * Height * Width) + Boxes.Sum(p => p.Volume);
             }
         }
 
         public DateTime? dateOfProduction;
 
-        public List<BoxModel> boxs { get; set; }
+        public List<BoxModel> Boxes { get; set; }
     }
 }

@@ -1,21 +1,16 @@
-﻿using StockApp.models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text.Json;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace StockApp
 {
     public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            var s = PalletsHelper.ReadFromFile();
-            s.FirstOrDefault().height = 100000;
-            var sortedPallets = s.OrderByDescending(x => x.expirationDate).Take(3);
-            PalletsHelper.PrintPalletOnConsole(sortedPallets);
-            PalletsHelper.WriteInFile(s);
+
         }
     }
 }
